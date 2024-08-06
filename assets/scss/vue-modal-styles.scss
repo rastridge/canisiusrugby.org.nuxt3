@@ -1,0 +1,106 @@
+.vm--container {
+  position: fixed;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 999;
+}
+.vm--overlay {
+  position: fixed;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  /* z-index: 999; */
+  opacity: 1;
+}
+.vm--modal {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+	background-color: white;
+	border: thick solid black;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px -2px rgba(167, 171, 190, 0.4);
+}
+.vm--container.scrollable .vm--modal {
+  margin-bottom: 2px;
+}
+.vm--top-right-slot {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.vm-transition--overlay-enter-active,
+.vm-transition--overlay-leave-active {
+  transition: all 50ms;
+}
+.vm-transition--overlay-enter,
+.vm-transition--overlay-leave-active {
+  opacity: 0;
+}
+.vm-transition--modal-enter-active,
+.vm-transition--modal-leave-active {
+  transition: all 400ms;
+}
+.vm-transition--modal-enter,
+.vm-transition--modal-leave-active {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.vm-transition--default-enter-active,
+.vm-transition--default-leave-active {
+  transition: all 2ms;
+}
+.vm-transition--default-enter,
+.vm-transition--default-leave-active {
+  opacity: 0;
+}
+.vue-dialog {
+  font-size: 1rem;
+}
+.vue-dialog div {
+  box-sizing: border-box;
+}
+.vue-dialog-content {
+  flex: 1 0 auto;
+  width: 100%;
+	padding: 1rem;
+	background-color: whitesmoke;
+}
+.vue-dialog-content-title {
+	color:black;
+	text-align: center;
+}
+/* button area */
+.vue-dialog-buttons {
+  display: flex;
+  flex: 0 1 auto;
+	width: 100%;
+  color: whitesmoke;
+	background-color: whitesmoke;
+}
+.vue-dialog-buttons-none {
+  width: 100%;
+  padding-bottom: 14px;
+}
+/* individuall button */
+.vue-dialog-button {
+  box-sizing: border-box;
+  background-color: rgb(46, 89, 231);
+	margin: 0.5rem;
+	border-radius: 5px;
+  line-height: 20px;
+  height: 60px;
+	font: inherit;
+	font-size: 0.8rem;
+  cursor: pointer;
+}
+.vue-dialog-button:hover {
+  background: rgb(36, 61, 141);
+}

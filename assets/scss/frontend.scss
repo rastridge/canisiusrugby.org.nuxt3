@@ -1,0 +1,468 @@
+/*!
+ * Start Bootstrap - Business Casual (http://startbootstrap.com/)
+ * frontend.scss
+ */
+
+@font-face {
+  font-family: 'Acme';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Acme Regular'), local('Acme-Regular'),
+    url('https://fonts.gstatic.com/s/acme/v7/FDMh4aixPTtSeEPULD_zPPesZW2xOQ-xsNqO47m55DA.woff2')
+      format('woff2');
+  unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+}
+
+$bodyFontFamily: 'Trebuchet MS', sans-serif;
+
+$textFontColor: #000;
+
+$brandFontColor: #fff;
+$brandFontFamily: 'Acme', sans-serif;
+$headerFontFamily: 'Acme', sans-serif;
+$errorFontColor: rgb(255, 100, 100);
+$infoFontColor: rgb(0, 109, 5);
+$navFootColor: rgba(255, 255, 255, 0.8);
+$fieldColor: rgba(0, 0, 100, 0.8);
+
+/*************** Typography ***************/
+html {
+  font-size: 16px;
+}
+
+.frontend-body {
+  font-family: $bodyFontFamily;
+  background: #004;
+  color: black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 0.8rem;
+}
+
+body {
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.header,
+.subheader,
+.subsubheader {
+  color: #000066;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-family: $headerFontFamily;
+  letter-spacing: 1px;
+}
+.subheader {
+  font-size: 0.7rem;
+}
+.subsubheader {
+  font-size: 0.6rem;
+}
+.datefont {
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.news-frame {
+  padding: 1rem;
+  background-color: #fff;
+  border: 2px solid rgb(0, 0, 150);
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.frame,
+.info-frame {
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: rgb(255, 255, 255);
+}
+
+.info-frame {
+  border: thin dotted $infoFontColor;
+  color: $infoFontColor;
+  font-weight: normal;
+  font-family: sans-serif, monospace;
+  margin-bottom: 0.5rem;
+}
+
+hr {
+  max-width: 400px;
+  border-color: #999999;
+}
+
+.error {
+  padding-top: 15px;
+  color: $errorFontColor;
+}
+
+#menu-brand {
+  display: block;
+}
+
+.navbar {
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 3px;
+  font-size: 1.1em;
+  border: none;
+  background: $navFootColor;
+}
+
+.loading-box {
+  font-style: italic;
+  min-height: 400px;
+  padding: 1em;
+  margin: 1em;
+}
+
+#content {
+  padding: 20px;
+  background-color: #fff;
+  background-color: #e6e3e3;
+  min-height: 600px;
+}
+
+.img-full {
+  min-width: 100%;
+}
+
+.brand-before,
+.brand-name {
+  text-transform: capitalize;
+}
+
+.brand-before {
+  margin: 15px 0;
+}
+
+.brand-name {
+  margin: 0;
+  font-size: 3em;
+}
+
+.tagline-divider {
+  margin: 15px auto 3px;
+  max-width: 250px;
+  border-color: #999999;
+}
+
+.box:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.box {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  -webkit-animation: fadein 2s;
+  -moz-animation: fadein 2s;
+  -ms-animation: fadein 2s;
+  -o-animation: fadein 2s;
+  animation: fadein 2s;
+}
+
+.modal-header,
+.modal-footer {
+  background-color: #e6e3e3;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.my-tooltip + .tooltip > .tooltip-inner {
+  background-color: #000066;
+  color: #fff;
+}
+
+footer {
+  background: transparent;
+  color: white;
+  margin: 0;
+  padding: 20px 0;
+}
+
+.listing {
+  padding: 5px;
+  width: 100%;
+  background-color: white;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  /* line 175, /Users/rastridge/Code/buffalorugby.org/_lib/_styles/_SASS/frontend.scss */
+  from {
+    opacity: 0;
+  }
+  /* line 176, /Users/rastridge/Code/buffalorugby.org/_lib/_styles/_SASS/frontend.scss */
+  to {
+    opacity: 1;
+  }
+}
+
+/*************  media screen **********************************************/
+
+@media screen and (min-width: 376px) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 0.9rem;
+  }
+
+  body {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .header {
+    font-size: 0.9rem;
+  }
+  .subheader {
+    font-size: 0.8rem;
+  }
+  .subsubheader {
+    font-size: 0.7rem;
+  }
+}
+
+/*************  media screen **********************************************/
+
+@media screen and (min-width: 768px) {
+  .frontend-body {
+    background-color: #fff;
+    background: url('~/assets/imgs/harvard.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
+  body {
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  .header {
+    font-size: 1.1rem;
+  }
+  .subheader {
+    font-size: 1rem;
+  }
+  .subsubheader {
+    font-size: 0.9rem;
+  }
+  .box {
+    padding: 1.5rem;
+    background: $fieldColor;
+  }
+  #menu-brand {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1.2rem;
+  }
+  body {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  .header {
+    font-size: 1.2rem;
+  }
+  .subheader {
+    font-size: 1.1rem;
+  }
+  .subsubheader {
+    font-size: 1rem;
+  }
+}
+
+/*!
+* brand and logo and addressbar
+*/
+
+img.bflo-logo {
+  display: inline-block;
+  width: 100px;
+}
+
+.brand {
+  font-size: 2.5em;
+  display: inline-block;
+  font-family: $brandFontFamily;
+  color: $brandFontColor;
+}
+
+.address-bar {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  img.bflo-logo {
+    display: inline-block;
+    width: 200px;
+  }
+
+  .brand {
+    padding: 20px 0 7px;
+    text-shadow: 4px 4px 8px rgba(0, 0, 50, 0.8);
+    font-size: 5em;
+    font-weight: 700;
+  }
+
+  .address-bar {
+    display: block;
+    margin: 1rem;
+    height: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: rgb(255, 217, 0);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  img.bflo-logo {
+    width: 300px;
+  }
+  .brand {
+    font-size: 7em;
+    padding: 30px 0 10px;
+  }
+  .address-bar {
+    font-size: 1.25em;
+    font-weight: 500;
+  }
+}

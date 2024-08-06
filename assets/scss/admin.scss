@@ -1,0 +1,60 @@
+/*!
+* admin.scss
+*/
+
+$adminFontColor: rgb(204, 202, 202);
+$adminBkgrdColor: rgb(0, 0, 70);
+/*
+$adminFontColor: rgb(0, 0, 0);
+$adminBkgrdColor: rgb(255, 255, 255);
+*/
+.admin-body {
+	background: none;
+}
+
+.content-area {
+	min-height: 900px;
+	padding:1em;
+	margin-bottom: 1em;
+	background-color: $adminBkgrdColor;
+	color: $adminFontColor;
+}
+
+.nav > li > a {
+	padding: 3px;
+}
+
+.headline {
+	font-size: 2.5rem;
+	text-align: center;
+	color: $adminFontColor;
+}
+
+.sub-headline {
+	font-size: 1.5rem;
+	text-align: center;
+	color: $adminFontColor;
+}
+
+.vue-editor-color {
+	color: $adminFontColor;
+}
+
+.lightondark {
+	color: $adminFontColor;
+	background-color: $adminBkgrdColor;
+}
+
+.renderlist {
+	padding: 1em;
+	border: none;
+}
+
+.paging {
+	margin: 0.5em;
+}
+/*
+.loading-box {
+	color: $adminFontColor;
+}
+*/
