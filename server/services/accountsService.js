@@ -2,7 +2,7 @@
 const CONFIG = useRuntimeConfig()
 
 const { sendEmail } = useEmail()
-const { doDBQueryBuffalorugby } = useQuery()
+const { doDBQueryCanisiusrugby } = useQuery()
 const { getConnectionBuffalorugby } = useDBConnection()
 
 export const accountsService = {
@@ -34,7 +34,7 @@ async function lookupByEmail(email) {
 							account_id as id,
 							account_id
 						FROM
-							inbrc_accounts
+							can_accounts
 						WHERE
 							deleted = 0
 							AND
@@ -43,7 +43,7 @@ async function lookupByEmail(email) {
   // filename messsage, variable
   // activityLog('lookupByEmail', 'sql=', sql)
 
-  const accounts = await doDBQueryBuffalorugby(sql)
+  const accounts = await doDBQueryCanisiusrugby(sql)
   // return accounts[0].id
   return accounts
 }
@@ -54,7 +54,7 @@ async function getRecentUpdates() {
 									CONCAT(member_firstname," ", member_lastname) as name,
 									modified_dt
 								FROM
-									inbrc_accounts
+									can_accounts
 								WHERE
 									deleted = 0
 									AND
@@ -65,7 +65,7 @@ async function getRecentUpdates() {
 									modified_dt DESC
 								LIMIT 20`
 
-  const recent = await doDBQueryBuffalorugby(sql)
+  const recent = await doDBQueryCanisiusrugby(sql)
   return recent
 }
 
@@ -95,18 +95,18 @@ async function getAll() {
 									modified_dt,
 									modified_dt as dt,
 									status
-							FROM inbrc_accounts
+							FROM can_accounts
 							WHERE deleted = 0
 							ORDER BY member_lastname ASC`
 
-  const accounts = await doDBQueryBuffalorugby(sql)
+  const accounts = await doDBQueryCanisiusrugby(sql)
   return accounts
 }
 async function getOne(id) {
   const sql = `SELECT *
-							FROM inbrc_accounts
+							FROM can_accounts
 							WHERE account_id = ?`
-  const accounts = await doDBQueryBuffalorugby(sql, [id])
+  const accounts = await doDBQueryCanisiusrugby(sql, [id])
   const account = accounts[0]
   return account
 }
@@ -121,7 +121,7 @@ async function addOne(info) {
 
     // check for existing email
     let msg = null // will be returned with message if email exists
-    let sql = `SELECT * FROM inbrc_accounts WHERE deleted = 0`
+    let sql = `SELECT * FROM can_accounts WHERE deleted = 0`
     const [rows] = await CONN.execute(sql)
     const temp = rows
     const lc_account_email = info.account_email.toLowerCase()
@@ -135,7 +135,7 @@ async function addOne(info) {
       //
       // add record
       //
-      let sql = `INSERT INTO inbrc_accounts
+      let sql = `INSERT INTO can_accounts
 									SET
 									account_email = ?,
 									member_firstname = ?,
@@ -234,7 +234,7 @@ async function addOne(info) {
 
       await sendEmail(
         CONFIG.TO,
-        'Buffalo Rugby Club Member Account Creation',
+        'Canisius University Rugby Club  Member Account Creation',
         email_msg,
       )
     } else {
@@ -261,7 +261,7 @@ async function editOne(info) {
 
     // check for other users with proposed email address
     let msg = null // will be returned with message if email exists
-    let sql = `SELECT * FROM inbrc_accounts WHERE deleted = 0 AND account_id <> ${info.account_id}`
+    let sql = `SELECT * FROM can_accounts WHERE deleted = 0 AND account_id <> ${info.account_id}`
     const [rows] = await CONN.execute(sql)
     const temp = rows
     const lc_account_email = info.account_email.toLowerCase()
@@ -271,7 +271,7 @@ async function editOne(info) {
     // If no email conflict
     //
     if (!emailExists) {
-      let sql = `UPDATE inbrc_accounts
+      let sql = `UPDATE can_accounts
 							SET
 									account_email = ?,
 									member_firstname = ?,
@@ -398,7 +398,7 @@ async function deleteOne(id) {
     let sql = `SELECT
 				count(*) as played
 			FROM
-				inbrc_stats_player
+				can_stats_player
 			WHERE
 				(player_id = ${id} OR replaced_by = ${id}) AND deleted = 0;`
     let inserts = []
@@ -406,7 +406,7 @@ async function deleteOne(id) {
     const games = await conn.execute(sql)
     const played = games[0][0].played
     if (played === 0) {
-      sql = `UPDATE inbrc_accounts
+      sql = `UPDATE can_accounts
 							SET
 									deleted = '1',
 									deleted_dt= NOW()
@@ -416,7 +416,7 @@ async function deleteOne(id) {
       sql = mysql.format(sql, inserts)
       await conn.execute(sql)
 
-      sql = `UPDATE inbrc_newsletter_openings
+      sql = `UPDATE can_newsletter_openings
 							SET
 									deleted = '1'
 								WHERE account_id = ?;`
@@ -439,14 +439,14 @@ async function deleteOne(id) {
 }
 
 async function changeStatus({ id, status }) {
-  const sql = `UPDATE inbrc_accounts
+  const sql = `UPDATE can_accounts
 							SET
 									status = ?,
 									deleted_dt= NOW()
 								WHERE account_id = ?;`
   let inserts = []
   inserts.push(status, id)
-  const accounts = await doDBQueryBuffalorugby(sql, inserts)
+  const accounts = await doDBQueryCanisiusrugby(sql, inserts)
   return accounts
 }
 
@@ -471,9 +471,9 @@ async function getShow() {
 									SELECT
 											COUNT(p.player_id)
 									FROM
-											inbrc_stats_player p,
-											inbrc_accounts ac,
-											inbrc_stats_games g
+											can_stats_player p,
+											can_accounts ac,
+											can_stats_games g
 									WHERE
 											ac.account_id = a.account_id AND p.player_id = a.account_id AND p.game_id = g.game_id AND g.game_type_id <> 8 AND g.game_type_id <> 7
 							) AS fifteensct,
@@ -481,20 +481,20 @@ async function getShow() {
 									SELECT
 											COUNT(p.player_id)
 									FROM
-											inbrc_stats_player p,
-											inbrc_accounts ac,
-											inbrc_stats_games g
+											can_stats_player p,
+											can_accounts ac,
+											can_stats_games g
 									WHERE
 											ac.account_id = a.account_id AND p.player_id = a.account_id AND p.game_id = g.game_id AND g.game_type_id <> 8 AND g.game_type_id = 7 AND g.game_type_id <> 8
 							) AS sevensct
 							FROM
-									inbrc_accounts a,
-									inbrc_member_types mt
+									can_accounts a,
+									can_member_types mt
 							WHERE
 									a.member_type_id NOT IN('13') AND a.STATUS = 1 AND a.deleted = 0 AND a.member_type_id = mt.member_type_id
 							ORDER BY a.member_lastname ASC`
 
-  const accounts = await doDBQueryBuffalorugby(sql)
+  const accounts = await doDBQueryCanisiusrugby(sql)
   return accounts
 }
 /*
@@ -524,11 +524,11 @@ async function getAllFlag() {
 								modified_dt,
 								modified_dt as dt,
 								status
-						FROM inbrc_accounts
+						FROM can_accounts
 						WHERE deleted = 0 AND ( member_type_id IN (11,12,15))
 						ORDER BY member_lastname ASC`
 
-	accounts = await doDBQueryBuffalorugby(sql)
+	accounts = await doDBQueryCanisiusrugby(sql)
 	return accounts
 }
 
@@ -574,11 +574,11 @@ async function getOneFlag(id) {
 
 								member_type_id
 							FROM
-								inbrc_accounts
+								can_accounts
 							WHERE
 								account_id = ${id}`
 
-	account = await doDBQueryBuffalorugby(sql)
+	account = await doDBQueryCanisiusrugby(sql)
 	return account[0]
 }
  */
@@ -610,13 +610,13 @@ async function addOneFlag({
 	sms_recipient,
 }) {
 	// check for other users with proposed email address
-	let sql = `select * from inbrc_accounts where deleted = 0`
-	accounts = await doDBQueryBuffalorugby(sql)
+	let sql = `select * from can_accounts where deleted = 0`
+	accounts = await doDBQueryCanisiusrugby(sql)
 	let account = accounts.find((u) => u.account_email === account_email)
 
 	if (!account) {
 		// let hashedpassword = md5(account_remind).substring(3,11)
-		sql = `INSERT INTO inbrc_accounts
+		sql = `INSERT INTO can_accounts
 							SET
 								member_guardian = ?,
 								member_dob = ?,
@@ -678,7 +678,7 @@ async function addOneFlag({
 			newsletter_recipient,
 			sms_recipient
 		)
-		account = await doDBQueryBuffalorugby(sql, inserts)
+		account = await doDBQueryCanisiusrugby(sql, inserts)
 		account.error = ''
 		const email = {
 			from: FROM,
@@ -687,7 +687,7 @@ async function addOneFlag({
 			subject: 'BRC Flag Member Account Modification',
 			body_text: '',
 			body_html:
-				'<h3>An Buffalo Rugby Club youth flag rugby account for ' +
+				'<h3>An Canisius University Rugby Club  youth flag rugby account for ' +
 				member_firstname +
 				' ' +
 				member_lastname +
@@ -733,14 +733,14 @@ async function addFlagByRegister({
 	sms_recipient,
 }) {
 	// check for other users with proposed email address
-	let sql = `select * from inbrc_accounts where deleted = 0`
-	accounts = await doDBQueryBuffalorugby(sql)
+	let sql = `select * from can_accounts where deleted = 0`
+	accounts = await doDBQueryCanisiusrugby(sql)
 	let account = accounts.find((u) => u.account_email === account_email)
 
 	if (!account) {
 		// let hashedpassword = md5(account_remind).substring(3,11)
 
-		sql = `INSERT INTO inbrc_accounts
+		sql = `INSERT INTO can_accounts
 							SET
 								member_guardian = ?,
 								member_dob = ?,
@@ -802,7 +802,7 @@ async function addFlagByRegister({
 			newsletter_recipient,
 			sms_recipient
 		)
-		account = await doDBQueryBuffalorugby(sql, inserts)
+		account = await doDBQueryCanisiusrugby(sql, inserts)
 		account.error = ''
 
 		const email = {
@@ -812,7 +812,7 @@ async function addFlagByRegister({
 			subject: 'BRC Flag Member Account Creation',
 			body_text: '',
 			body_html:
-				'<h3>An Buffalo Rugby Club youth flag rugby account for ' +
+				'<h3>An Canisius University Rugby Club  youth flag rugby account for ' +
 				member_firstname +
 				' ' +
 				member_lastname +
@@ -858,8 +858,8 @@ async function editOneFlag({
 	sms_recipient,
 	id,
 }) {
-	let sql = `SELECT * FROM inbrc_accounts WHERe deleted = 0 AND account_id <> ${id}`
-	accounts = await doDBQueryBuffalorugby(sql)
+	let sql = `SELECT * FROM can_accounts WHERe deleted = 0 AND account_id <> ${id}`
+	accounts = await doDBQueryCanisiusrugby(sql)
 
 	let account = accounts.find((u) => u.account_email === account_email)
 
@@ -868,7 +868,7 @@ async function editOneFlag({
 		let inserts = []
 		let msg = ''
 
-		sql = `UPDATE inbrc_accounts SET
+		sql = `UPDATE can_accounts SET
 									member_guardian = ?,
 									member_dob = ?,
 									member_gender = ?,
@@ -935,7 +935,7 @@ async function editOneFlag({
 		// filename messsage, variable
 		// activityLog('editOneFlag', 'sql=', sql)
 
-		account = await doDBQueryBuffalorugby(sql, inserts)
+		account = await doDBQueryCanisiusrugby(sql, inserts)
 		account.error = ''
 
 		// filename messsage, variable
@@ -973,9 +973,9 @@ async function getOfficers() {
 									g.member_admin_type as office,
 									h.member_admin_type as office2
 								FROM
-									inbrc_accounts a,
-									inbrc_member_admin_types h,
-									inbrc_member_admin_types g
+									can_accounts a,
+									can_member_admin_types h,
+									can_member_admin_types g
 								WHERE
 									a.member_admin_type_id = g.member_admin_type_id
 									AND a.member_admin_type2_id = h.member_admin_type_id
@@ -985,7 +985,7 @@ async function getOfficers() {
 								ORDER BY
 									a.member_admin_type_id`
 
-  const officers = await doDBQueryBuffalorugby(sql)
+  const officers = await doDBQueryCanisiusrugby(sql)
   return officers
 }
 
@@ -997,14 +997,14 @@ async function getWof() {
 								member_wall_of_fame_year,
 								member_pic_path
 							FROM
-									inbrc_accounts
+									can_accounts
 							WHERE
 									member_wall_of_fame_year != ''
 									AND deleted = 0
 									AND Status = 1
 							ORDER BY member_wall_of_fame_year`
 
-  const wof = await doDBQueryBuffalorugby(sql)
+  const wof = await doDBQueryCanisiusrugby(sql)
   return wof
 }
 
@@ -1014,21 +1014,21 @@ async function getSuggestions() {
 									member_firstname,
 									member_lastname,
 									CONCAT(member_firstname," ", member_lastname) as title
-							FROM inbrc_accounts
+							FROM can_accounts
 							WHERE deleted = 0 AND status = 1
 							ORDER BY member_lastname ASC`
 
-  const accounts = await doDBQueryBuffalorugby(sql)
+  const accounts = await doDBQueryCanisiusrugby(sql)
   return accounts
 }
 
 async function getMemberTypes() {
-  const sql = `SELECT * FROM inbrc_member_types WHERE 1`
-  const membertypes = await doDBQueryBuffalorugby(sql)
+  const sql = `SELECT * FROM can_member_types WHERE 1`
+  const membertypes = await doDBQueryCanisiusrugby(sql)
   return membertypes
 }
 async function getMemberAdminTypes() {
-  const sql = `SELECT * FROM inbrc_member_admin_types WHERE 1`
-  const memberadmintypes = await doDBQueryBuffalorugby(sql)
+  const sql = `SELECT * FROM can_member_admin_types WHERE 1`
+  const memberadmintypes = await doDBQueryCanisiusrugby(sql)
   return memberadmintypes
 }

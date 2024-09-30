@@ -1,17 +1,17 @@
 const { doDBQueryDatestring } = useQuery()
 
 export const paymentsService = {
-	getAll,
-	getAllCurrent,
-	getOne,
-	editOne,
-	addOne,
-	deleteOne,
-	changeStatus,
+  getAll,
+  getAllCurrent,
+  getOne,
+  editOne,
+  addOne,
+  deleteOne,
+  changeStatus,
 }
 
 async function getAll() {
-	const sql = `SELECT
+  const sql = `SELECT
 								payment_id,
 								payment_id as id,
 								payment_title,
@@ -26,17 +26,17 @@ async function getAll() {
 								modified_dt,
 								modified_dt as dt
 							FROM
-								inbrc_payments
+								can_payments
 							WHERE
 								deleted = 0
 							ORDER BY
 								id DESC`
-	const payments = await doDBQueryDatestring(sql)
-	return payments
+  const payments = await doDBQueryDatestring(sql)
+  return payments
 }
 
 async function getAllCurrent() {
-	const sql = `SELECT
+  const sql = `SELECT
 								payment_id,
 								payment_id as id,
 								payment_title,
@@ -51,7 +51,7 @@ async function getAllCurrent() {
 								modified_dt,
 								modified_dt as dt
 							FROM
-									inbrc_payments
+									can_payments
 							WHERE
 								deleted = 0
 								AND
@@ -61,12 +61,12 @@ async function getAllCurrent() {
 							ORDER BY
 								id DESC`
 
-	const payments = await doDBQueryDatestring(sql)
-	return payments
+  const payments = await doDBQueryDatestring(sql)
+  return payments
 }
 
 async function getOne(id) {
-	const sql = `SELECT
+  const sql = `SELECT
 								payment_id,
 								payment_id as id,
 								payment_title,
@@ -80,25 +80,25 @@ async function getOne(id) {
 								created_dt,
 								modified_dt
 							FROM
-								inbrc_payments
+								can_payments
 							WHERE
 								deleted = 0
 								AND
 								payment_id = ${id}`
 
-	const payments = await doDBQueryDatestring(sql)
-	return payments[0]
+  const payments = await doDBQueryDatestring(sql)
+  return payments[0]
 }
 
 async function editOne({
-	payment_title,
-	payment_description,
-	payment_paypal_button,
-	release_dt,
-	expire_dt,
-	id,
+  payment_title,
+  payment_description,
+  payment_paypal_button,
+  release_dt,
+  expire_dt,
+  id,
 }) {
-	const sql = `UPDATE inbrc_payments SET
+  const sql = `UPDATE can_payments SET
 								payment_title = ?,
 								payment_description = ?,
 								payment_paypal_button = ?,
@@ -106,28 +106,28 @@ async function editOne({
 								expire_dt = ?,
 								modified_dt= NOW()
 							WHERE payment_id = ?`
-	const inserts = []
-	inserts.push(
-		payment_title,
-		payment_description,
-		payment_paypal_button,
-		release_dt,
-		expire_dt,
-		id
-	)
-	const payments = await doDBQueryDatestring(sql, inserts)
+  const inserts = []
+  inserts.push(
+    payment_title,
+    payment_description,
+    payment_paypal_button,
+    release_dt,
+    expire_dt,
+    id,
+  )
+  const payments = await doDBQueryDatestring(sql, inserts)
 
-	return payments
+  return payments
 }
 
 async function addOne({
-	payment_title,
-	payment_description,
-	payment_paypal_button,
-	release_dt,
-	expire_dt,
+  payment_title,
+  payment_description,
+  payment_paypal_button,
+  release_dt,
+  expire_dt,
 }) {
-	const sql = `INSERT INTO inbrc_payments SET
+  const sql = `INSERT INTO can_payments SET
 								payment_title = ?,
 								payment_description = ?,
 								payment_paypal_button = ?,
@@ -138,35 +138,32 @@ async function addOne({
 								created_dt = NOW(),
 								modified_dt = NOW()`
 
-	const inserts = []
-	inserts.push(
-		payment_title,
-		payment_description,
-		payment_paypal_button,
-		release_dt,
-		expire_dt
-	)
-	const payments = await doDBQueryDatestring(sql, inserts)
+  const inserts = []
+  inserts.push(
+    payment_title,
+    payment_description,
+    payment_paypal_button,
+    release_dt,
+    expire_dt,
+  )
+  const payments = await doDBQueryDatestring(sql, inserts)
 
-	return payments
+  return payments
 }
 
 async function deleteOne(id) {
-	const sql =
-		`UPDATE inbrc_payments SET deleted = 1, deleted_dt= NOW() WHERE payment_id = ` +
-		id
-	const payments = await doDBQueryDatestring(sql)
+  const sql =
+    `UPDATE can_payments SET deleted = 1, deleted_dt= NOW() WHERE payment_id = ` +
+    id
+  const payments = await doDBQueryDatestring(sql)
 
-	return payments
+  return payments
 }
 
 async function changeStatus({ id, status }) {
-	const sql =
-		`UPDATE inbrc_payments SET status = "` +
-		status +
-		`" WHERE payment_id = ` +
-		id
-	const payments = await doDBQueryDatestring(sql)
+  const sql =
+    `UPDATE can_payments SET status = "` + status + `" WHERE payment_id = ` + id
+  const payments = await doDBQueryDatestring(sql)
 
-	return payments
+  return payments
 }

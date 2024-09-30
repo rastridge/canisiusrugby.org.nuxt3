@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="default"
-    class="frontend-body"
-  >
+  <div class="frontend-body">
     <Head>
       <Title>Welcome to the Canisius University Rugby Club</Title>
     </Head>
@@ -100,68 +97,75 @@
                       <DropdownMenu>
                         <DropdownItem
                           v-for="item in content"
-                          :key="item.id"
-                          :to="'/content/' + item.content_id"
-                          >{{ item.content_name }}
-                        </DropdownItem>
-                        <DropdownItem to="/members/officers">
-                          Officers
+                          :key="item.content_id"
+                        >
+                          <nuxt-link :to="`/content/${item.content_id}`">
+                            {{ item.content_name }}
+                          </nuxt-link>
                         </DropdownItem>
 
-                        <dropdown-item to="/members">Members </dropdown-item>
-                        <dropdown-item to="/payments">Payments </dropdown-item>
-                        <dropdown-item
-                          v-if="!isLoggedIn"
-                          to="/admin/loginpage"
-                          >Login
+                        <DropdownItem>
+                          <nuxt-link to="/officers"> Officers </nuxt-link>
+                        </DropdownItem>
+
+                        <dropdown-item>
+                          <nuxt-link to="/members">Members</nuxt-link>
+                        </dropdown-item>
+                        <dropdown-item>
+                          <nuxt-link to="/payments"
+                            >Payments
+                          </nuxt-link></dropdown-item
+                        >
+                        <dropdown-item v-if="!isLoggedIn">
+                          <nuxt-link to="/admin/loginpage">Login </nuxt-link>
+                        </dropdown-item>
+                      </DropdownMenu>
+                    </NavItemDropdown>
+                    &nbsp; &nbsp;
+                    <!--News-->
+                    <NavItemDropdown>
+                      <NavItemDropdownToggle>News</NavItemDropdownToggle>
+                      <DropdownMenu>
+                        <dropdown-item>
+                          <nuxt-link to="/news">News</nuxt-link>
+                        </dropdown-item>
+                        <dropdown-item>
+                          <nuxt-link to="/contributions"
+                            >Contributions</nuxt-link
+                          >
                         </dropdown-item>
                       </DropdownMenu>
                     </NavItemDropdown>
 
-                    <!-- News -->
-                    <!--            <b-nav-item-dropdown text="News">
-              <b-dropdown-item
-                to="/news"
-                exact
-                >News</b-dropdown-item
-              >
-              <b-dropdown-item
-                v-b-tooltip.hover
-                to="/contributions"
-                exact
-                title="Current, past, howto"
-                >Contributions</b-dropdown-item
-              >
-            </b-nav-item-dropdown>
-            &nbsp; &nbsp;
- -->
                     <!-- Competition -->
-                    <!--             <b-nav-item-dropdown text="Competition">
-              <b-dropdown-item to="/schedule"
-                >Schedule and Results</b-dropdown-item
-              >
-              <b-dropdown-item
-                to="/stats/player_stats"
-                exact
-                >Player Stats Fifteens</b-dropdown-item
-              >
-              <b-dropdown-item
-                to="/stats/player_stats7s"
-                exact
-                >Player Stats Sevens</b-dropdown-item
-              >
-              <b-dropdown-item
-                to="/stats/team_stats"
-                exact
-                >Team Record</b-dropdown-item
-              >
-              <b-dropdown-item
-                to="/stats/player_history"
-                exact
-                >Player History</b-dropdown-item
-              >
-            </b-nav-item-dropdown>
- -->
+
+                    <NavItemDropdown>
+                      <NavItemDropdownToggle>Competition</NavItemDropdownToggle>
+                      <DropdownMenu>
+                        <dropdown-item>
+                          <nuxt-link to="/schedule">Schedule</nuxt-link>
+                        </dropdown-item>
+
+                        <dropdown-item>
+                          <nuxt-link to="/stats/player_stats"
+                            >Player Stats</nuxt-link
+                          >
+                        </dropdown-item>
+
+                        <dropdown-item>
+                          <nuxt-link to="/stats/team_stats"
+                            >Team Record</nuxt-link
+                          >
+                        </dropdown-item>
+
+                        <dropdown-item>
+                          <nuxt-link to="/stats/player_history"
+                            >Player History</nuxt-link
+                          >
+                        </dropdown-item>
+                      </DropdownMenu>
+                    </NavItemDropdown>
+
                     <!-- History -->
                     <!--           <b-nav-item-dropdown text="History">
               <b-dropdown-item to="/content/34">Photos</b-dropdown-item>
@@ -187,7 +191,7 @@
 			<div class="row">
 				<div class="col-sm-12 text-center">
 					<p>
-						Copyright {{ $moment().format('YYYY') }} &copy; The Canisius College
+						Copyright {{ $moment().format('YYYY') }} &copy; The Canisius University
 						Rugby Club - Buffalo New York
 					</p>
 				</div>
@@ -196,12 +200,20 @@
           </div>
         </div>
       </div>
+      <!--      <div
+        class="surface-400 border-round-lg md:border-round-xl shadow-6 m-0 md:m-2 p-1 md:p-2"
+      >
+ -->
+      <div
+        class="surface-400 border-round-lg md:border-round-xl shadow-6 m-0 md:m-2 p-1 md:p-2"
+      >
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  // import { contentService } from "@/services/";
   // import SponsorAds from '@/components/parts/SponsorAds'
 
   const isLoggedIn = ref(false)
@@ -210,19 +222,12 @@
   // middleware: 'noauth',
 
   //
-  // Get current news
+  // Get custom menu items
   //
   const { data } = await useFetch('/content/custommenuitems', {
     method: 'get',
   })
   content.value = data.value
-
-  /*       head() {
-            title: 'Welcome to the Canisius College Rugby Club',
-            bodyAttrs: {
-              class: 'frontend-body',
-            },
-        }, */
 </script>
 
 <style lang="scss">

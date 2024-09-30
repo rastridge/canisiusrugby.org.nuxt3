@@ -1,10 +1,27 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import Aura from '@primevue/themes/aura'
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: false },
   ssr: false,
-  modules: ['usebootstrap'],
+  modules: [
+    'usebootstrap',
+    '@primevue/nuxt-module',
+    'dayjs-nuxt',
+    '@pinia/nuxt',
+  ],
 
+  primevue: {
+    importPT: { from: './assets/pvpresets/primevue_preset.js' },
+
+    options: {
+      theme: {
+        preset: Aura,
+        options: {},
+      },
+    },
+  },
   runtimeConfig: {
     API_SECRET: process.env.API_SECRET,
     DB_HOST: process.env.DB_HOST,
@@ -20,6 +37,7 @@ export default defineNuxtConfig({
     TWILIO_NUMBER: process.env.TWILIO_NUMBER,
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+    SEASON_DIVIDE_DATE: process.env.SEASON_DIVIDE_DATE,
 
     // Keys within public, will be also be
     // exposed to the client-side
@@ -28,4 +46,11 @@ export default defineNuxtConfig({
       GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
     },
   },
+  components: [
+    '~/components/app',
+    '~/components/selectors',
+    '~/components/forms',
+    '~/components/displays',
+    '~/components',
+  ],
 })

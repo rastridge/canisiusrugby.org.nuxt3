@@ -1,16 +1,16 @@
-const { doDBQueryBuffalorugby } = useQuery()
+const { doDBQueryCanisiusrugby } = useQuery()
 export const supportingaccountsService = {
-	getAll,
-	getAllCurrent,
-	getOne,
-	editOne,
-	addOne,
-	deleteOne,
-	changeStatus,
+  getAll,
+  getAllCurrent,
+  getOne,
+  editOne,
+  addOne,
+  deleteOne,
+  changeStatus,
 }
 
 async function getAll() {
-	const sql = `SELECT
+  const sql = `SELECT
 									supportingApp_id,
 									supportingApp_id as id,
 									supportingApp_name,
@@ -25,16 +25,16 @@ async function getAll() {
 									deleted_dt,
 									modified_dt,
 									modified_dt as dt
-                FROM inbrc_supportingaccts
+                FROM can_supportingaccts
                 WHERE deleted = 0
                 ORDER BY title ASC`
 
-	const supportingaccounts = await doDBQueryBuffalorugby(sql)
-	return supportingaccounts
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql)
+  return supportingaccounts
 }
 
 async function getAllCurrent() {
-	const sql = `SELECT
+  const sql = `SELECT
 								supportingApp_id,
 								supportingApp_id as id,
 								supportingApp_name,
@@ -49,18 +49,18 @@ async function getAllCurrent() {
 								deleted_dt,
 								modified_dt,
 								modified_dt as dt
-							FROM inbrc_supportingaccts
+							FROM can_supportingaccts
 							WHERE
 								deleted = 0
 								AND
 								STATUS = 1`
 
-	const supportingaccounts = await doDBQueryBuffalorugby(sql)
-	return supportingaccounts
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql)
+  return supportingaccounts
 }
 
 async function getOne(id) {
-	const sql = `SELECT 	
+  const sql = `SELECT
 									supportingApp_id,
 									supportingApp_id as id,
 									supportingApp_name,
@@ -70,25 +70,25 @@ async function getOne(id) {
 									supportingApp_owner,
 									supportingApp_username,
 									supportingApp_password
-							FROM 
-								inbrc_supportingaccts 
-							WHERE 
+							FROM
+								can_supportingaccts
+							WHERE
 								supportingApp_id=${id}`
 
-	const supportingaccounts = await doDBQueryBuffalorugby(sql)
-	return supportingaccounts[0]
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql)
+  return supportingaccounts[0]
 }
 
 async function addOne({
-	supportingApp_name,
-	supportingApp_description,
-	supportingApp_url,
-	supportingApp_owner,
-	supportingApp_username,
-	supportingApp_password,
+  supportingApp_name,
+  supportingApp_description,
+  supportingApp_url,
+  supportingApp_owner,
+  supportingApp_username,
+  supportingApp_password,
 }) {
-	const sql = `INSERT INTO 
-								inbrc_supportingaccts
+  const sql = `INSERT INTO
+								can_supportingaccts
               SET
 								supportingApp_name = ?,
 								supportingApp_description = ?,
@@ -101,29 +101,29 @@ async function addOne({
 								created_dt = NOW(),
 								modified_dt = NOW()`
 
-	let inserts = []
-	inserts.push(
-		supportingApp_name,
-		supportingApp_description,
-		supportingApp_url,
-		supportingApp_owner,
-		supportingApp_username,
-		supportingApp_password
-	)
-	const supportingaccounts = await doDBQueryBuffalorugby(sql, inserts)
-	return supportingaccounts
+  let inserts = []
+  inserts.push(
+    supportingApp_name,
+    supportingApp_description,
+    supportingApp_url,
+    supportingApp_owner,
+    supportingApp_username,
+    supportingApp_password,
+  )
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql, inserts)
+  return supportingaccounts
 }
 
 async function editOne({
-	supportingApp_name,
-	supportingApp_description,
-	supportingApp_url,
-	supportingApp_owner,
-	supportingApp_username,
-	supportingApp_password,
-	id,
+  supportingApp_name,
+  supportingApp_description,
+  supportingApp_url,
+  supportingApp_owner,
+  supportingApp_username,
+  supportingApp_password,
+  id,
 }) {
-	const sql = `UPDATE inbrc_supportingaccts SET
+  const sql = `UPDATE can_supportingaccts SET
 									supportingApp_name = ?,
 									supportingApp_description = ?,
 									supportingApp_url = ?,
@@ -132,33 +132,33 @@ async function editOne({
 									supportingApp_password = ?,
 									modified_dt= NOW()
 								WHERE supportingApp_id = ?`
-	let inserts = []
+  let inserts = []
 
-	inserts.push(
-		supportingApp_name,
-		supportingApp_description,
-		supportingApp_url,
-		supportingApp_owner,
-		supportingApp_username,
-		supportingApp_password,
-		id
-	)
-	const supportingaccounts = await doDBQueryBuffalorugby(sql, inserts)
-	return supportingaccounts
+  inserts.push(
+    supportingApp_name,
+    supportingApp_description,
+    supportingApp_url,
+    supportingApp_owner,
+    supportingApp_username,
+    supportingApp_password,
+    id,
+  )
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql, inserts)
+  return supportingaccounts
 }
 
 async function deleteOne(id) {
-	const sql = `UPDATE inbrc_supportingaccts SET deleted=1, deleted_dt=NOW() WHERE supportingApp_id=${id}`
-	const supportingaccounts = await doDBQueryBuffalorugby(sql)
-	return supportingaccounts
+  const sql = `UPDATE can_supportingaccts SET deleted=1, deleted_dt=NOW() WHERE supportingApp_id=${id}`
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql)
+  return supportingaccounts
 }
 
 async function changeStatus({ id, status }) {
-	const sql =
-		`UPDATE inbrc_supportingaccts SET STATUS = "` +
-		status +
-		`" WHERE supportingApp_id  = ` +
-		id
-	const supportingaccounts = await doDBQueryBuffalorugby(sql)
-	return supportingaccounts
+  const sql =
+    `UPDATE can_supportingaccts SET STATUS = "` +
+    status +
+    `" WHERE supportingApp_id  = ` +
+    id
+  const supportingaccounts = await doDBQueryCanisiusrugby(sql)
+  return supportingaccounts
 }

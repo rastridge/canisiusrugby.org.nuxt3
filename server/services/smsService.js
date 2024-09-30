@@ -1,20 +1,20 @@
-const { doDBQueryBuffalorugby } = useQuery()
+const { doDBQueryCanisiusrugby } = useQuery()
 const { sendOneSMS } = useSMS()
 const { typeMatch } = useMatch()
 
 export const smsService = {
-	getAll,
-	sendSMS,
-	getOne,
-	addOne,
-	editOne,
-	deleteOne,
-	changeStatus,
-	getRecipientTypes,
+  getAll,
+  sendSMS,
+  getOne,
+  addOne,
+  editOne,
+  deleteOne,
+  changeStatus,
+  getRecipientTypes,
 }
 
 async function getAll() {
-	const sql = `SELECT
+  const sql = `SELECT
 								sms_id,
 								sms_id as id,
 								admin_user_id,
@@ -35,34 +35,34 @@ async function getAll() {
 								modified_dt,
 								modified_dt as dt
 							FROM
-								inbrc_sms
+								can_sms
 							WHERE
 								deleted = 0
 							ORDER BY dt DESC`
 
-	const result = await doDBQueryBuffalorugby(sql)
-	return result
+  const result = await doDBQueryCanisiusrugby(sql)
+  return result
 }
 
 async function sendSMS({ sms_id, sms_body_text, sms_recipient_type_id }) {
-	// get all active accounts marked sms_recipient
-	const sql = `SELECT
+  // get all active accounts marked sms_recipient
+  const sql = `SELECT
 									member_type_id,
 									member_type2_id,
 									account_addr_phone,
 									mail_recipient,
 									newsletter_recipient,
 									sms_recipient
-								FROM inbrc_accounts
+								FROM can_accounts
 								WHERE deleted = 0 AND status = 1 AND sms_recipient = 1
 								ORDER BY account_addr_phone ASC`
 
-	const accounts = await doDBQueryBuffalorugby(sql)
-	//
-	// make recipients list
-	//
-	function setSMSRecipients(accounts, recipient_type_id) {
-		/* 
+  const accounts = await doDBQueryCanisiusrugby(sql)
+  //
+  // make recipients list
+  //
+  function setSMSRecipients(accounts, recipient_type_id) {
+    /*
 		function newsletterTypeMemberMatch(recipient_type_id, el) {
 			recipient_type_id = parseInt(recipient_type_id)
 			const member_type_id = parseInt(el.member_type_id)
@@ -137,21 +137,21 @@ async function sendSMS({ sms_id, sms_body_text, sms_recipient_type_id }) {
 			return include
 		}
 		 */
-		return accounts.filter(function (account) {
-			// return newsletterTypeMemberMatch(recipient_type_id, account)
-			return typeMatch(recipient_type_id, account)
-		})
-	}
+    return accounts.filter(function (account) {
+      // return newsletterTypeMemberMatch(recipient_type_id, account)
+      return typeMatch(recipient_type_id, account)
+    })
+  }
 
-	// filter match member types with recipient types
-	const sms_recipients = setSMSRecipients(accounts, sms_recipient_type_id)
+  // filter match member types with recipient types
+  const sms_recipients = setSMSRecipients(accounts, sms_recipient_type_id)
 
-	const rec_cnt = sms_recipients.length
-	sms_recipients.forEach(function (recipient) {
-		sendOneSMS(recipient, sms_body_text)
-	})
+  const rec_cnt = sms_recipients.length
+  sms_recipients.forEach(function (recipient) {
+    sendOneSMS(recipient, sms_body_text)
+  })
 
-	const sql2 = `UPDATE inbrc_sms
+  const sql2 = `UPDATE can_sms
 						SET
 							sms_send_status = 3,
 							sms_sent = NOW(),
@@ -159,25 +159,25 @@ async function sendSMS({ sms_id, sms_body_text, sms_recipient_type_id }) {
 							sms_recp_cnt = ${rec_cnt}
 						WHERE sms_id = ${sms_id}`
 
-	await doDBQueryBuffalorugby(sql2)
-	return sms_recipients
+  await doDBQueryCanisiusrugby(sql2)
+  return sms_recipients
 }
 //
 //
 //
 async function getOne(id) {
-	const sql = `select * from inbrc_sms where sms_id = ` + id
-	const result = await doDBQueryBuffalorugby(sql)
-	return result[0]
+  const sql = `select * from can_sms where sms_id = ` + id
+  const result = await doDBQueryCanisiusrugby(sql)
+  return result[0]
 }
 
 async function addOne({
-	sms_recipient_type_id,
-	admin_user_id,
-	sms_subject,
-	sms_body_text,
+  sms_recipient_type_id,
+  admin_user_id,
+  sms_subject,
+  sms_body_text,
 }) {
-	var sql = `INSERT INTO inbrc_sms SET
+  var sql = `INSERT INTO can_sms SET
 								sms_recipient_type_id = ?,
                 admin_user_id = ?,
                 sms_subject = ?,
@@ -187,23 +187,23 @@ async function addOne({
                 created_dt = NOW(),
                 modified_dt= NOW()`
 
-	var inserts = []
-	inserts.push(sms_recipient_type_id, admin_user_id, sms_subject, sms_body_text)
-	const sms = await doDBQueryBuffalorugby(sql, inserts)
-	return sms
+  var inserts = []
+  inserts.push(sms_recipient_type_id, admin_user_id, sms_subject, sms_body_text)
+  const sms = await doDBQueryCanisiusrugby(sql, inserts)
+  return sms
 }
 
 async function editOne({
-	sms_id,
-	sms_recipient_type_id,
-	admin_user_id,
-	sms_subject,
-	sms_body_text,
-	sms_sent,
-	sms_send_complete,
-	sms_send_status,
+  sms_id,
+  sms_recipient_type_id,
+  admin_user_id,
+  sms_subject,
+  sms_body_text,
+  sms_sent,
+  sms_send_complete,
+  sms_send_status,
 }) {
-	var sql = `UPDATE inbrc_sms SET
+  var sql = `UPDATE can_sms SET
 							sms_recipient_type_id = ?,
 							admin_user_id = ?,
 							sms_subject = ?,
@@ -213,37 +213,37 @@ async function editOne({
 							sms_send_status = ?,
 							modified_dt= NOW()
 						WHERE sms_id = ?`
-	var inserts = []
-	inserts.push(
-		sms_recipient_type_id,
-		admin_user_id,
-		sms_subject,
-		sms_body_text,
-		sms_sent,
-		sms_send_complete,
-		sms_send_status,
-		sms_id
-	)
-	const result = await doDBQueryBuffalorugby(sql, inserts)
-	return result
+  var inserts = []
+  inserts.push(
+    sms_recipient_type_id,
+    admin_user_id,
+    sms_subject,
+    sms_body_text,
+    sms_sent,
+    sms_send_complete,
+    sms_send_status,
+    sms_id,
+  )
+  const result = await doDBQueryCanisiusrugby(sql, inserts)
+  return result
 }
 
 async function deleteOne(id) {
-	const sql =
-		`UPDATE inbrc_sms SET deleted=1, deleted_dt= NOW() WHERE sms_id = ` + id
-	const result = await doDBQueryBuffalorugby(sql)
-	return result
+  const sql =
+    `UPDATE can_sms SET deleted=1, deleted_dt= NOW() WHERE sms_id = ` + id
+  const result = await doDBQueryCanisiusrugby(sql)
+  return result
 }
 
 async function changeStatus({ id, status }) {
-	const sql =
-		`UPDATE inbrc_sms SET status = "` + status + `" WHERE sms_id = ` + id
-	const result = await doDBQueryBuffalorugby(sql)
-	return result
+  const sql =
+    `UPDATE can_sms SET status = "` + status + `" WHERE sms_id = ` + id
+  const result = await doDBQueryCanisiusrugby(sql)
+  return result
 }
 
 async function getRecipientTypes() {
-	const sql = `SELECT * FROM inbrc_newsletter_recipient_types WHERE 1`
-	const result = await doDBQueryBuffalorugby(sql)
-	return result
+  const sql = `SELECT * FROM can_newsletter_recipient_types WHERE 1`
+  const result = await doDBQueryCanisiusrugby(sql)
+  return result
 }

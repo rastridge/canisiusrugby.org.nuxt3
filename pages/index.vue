@@ -2,14 +2,14 @@
   <div id="splash">
     <div class="row">
       <div class="col-sm-12">
-        <div class="text-center"></div>
+        <div class="text-center">zcZXCZXczX</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  definePageMeta({
+  /*   definePageMeta({
     layout: 'landing',
-  })
+  }) */
 </script>
