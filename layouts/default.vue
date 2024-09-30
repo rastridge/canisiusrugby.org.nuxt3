@@ -231,5 +231,5 @@
 </script>
 
 <style lang="scss">
-  @import '~/assets/scss/frontend.scss';
+  @import '~/assets/css/layout/frontend.scss';
 </style>
