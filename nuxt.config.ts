@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   ],
 
   primevue: {
-    importPT: { from: './assets/pvpresets/primevue_preset.js' },
+    importPT: { from: './assets/css/primevue/pvpresets/primevue_preset.js' },
 
     options: {
       theme: {
