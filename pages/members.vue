@@ -94,34 +94,36 @@
           <template #expansion="slotProps">
             <div class="p-3">
               <table>
-                <tr>
-                  <th>Email</th>
-                  <th>Previous club</th>
-                  <th>Position</th>
-                  <th>15s Games</th>
-                  <th>7s Games</th>
-                  <th>WOF</th>
-                </tr>
-                <tr>
-                  <td style="width: 25%">
-                    <expose-email :email="slotProps.data.account_email" />
-                  </td>
-                  <td style="width: 25%">
-                    {{ slotProps.data.member_prev_club }}
-                  </td>
-                  <td style="width: 20%">
-                    {{ slotProps.data.member_position }}
-                  </td>
-                  <td style="width: 15%">
-                    {{ slotProps.data.fifteensct }}
-                  </td>
-                  <td style="width: 15%">
-                    {{ slotProps.data.sevensct }}
-                  </td>
-                  <td style="width: 5%">
-                    {{ slotProps.data.member_wall_of_fame_year }}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <th>Email</th>
+                    <th>Previous club</th>
+                    <th>Position</th>
+                    <th>15s Games</th>
+                    <th>7s Games</th>
+                    <th>WOF</th>
+                  </tr>
+                  <tr>
+                    <td style="width: 25%">
+                      <expose-email :email="slotProps.data.account_email" />
+                    </td>
+                    <td style="width: 25%">
+                      {{ slotProps.data.member_prev_club }}
+                    </td>
+                    <td style="width: 20%">
+                      {{ slotProps.data.member_position }}
+                    </td>
+                    <td style="width: 15%">
+                      {{ slotProps.data.fifteensct }}
+                    </td>
+                    <td style="width: 15%">
+                      {{ slotProps.data.sevensct }}
+                    </td>
+                    <td style="width: 5%">
+                      {{ slotProps.data.member_wall_of_fame_year }}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </template>

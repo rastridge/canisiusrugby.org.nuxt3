@@ -15,7 +15,7 @@
     "bcrypt": "^5.1.1",
     "dayjs-nuxt": "^2.1.9",
     "mysql2": "^3.11.0",
-    "nuxt": "^3.12.4",
+    "nuxt": "^3.13.2",
     "nuxt-primevue": "^3.0.0",
     "pinia": "^2.2.1",
     "primeflex": "^3.3.1",
