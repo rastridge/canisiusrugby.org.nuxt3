@@ -1,14 +1,12 @@
 <template>
-	<div class="my-header-style">
-		{{ title.charAt(0).toUpperCase() + title.slice(1) }}
-		<display-user-loggedin />
-	</div>
+  <div class="my-header-style">
+    {{ title.charAt(0).toUpperCase() + title.slice(1) }}
+    <display-user-loggedin />
+  </div>
 </template>
 
-<script>
-	export default {
-		props: {
-			title: { type: String, default: '', required: true },
-		},
-	}
+<script setup>
+  const props = defineProps({
+    title: { type: String, required: true },
+  })
 </script>

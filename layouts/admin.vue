@@ -16,36 +16,20 @@
 					>
  -->
 
-          <b-nav-item
-            v-if="checkPerm('contributions')"
-            to="/admin/contributions"
-            exact
-          >
-            Contributions
+          <b-nav-item v-if="checkPerm('contributions')">
+            <nuxt-link to="/admin/contributions">Contributions </nuxt-link>
           </b-nav-item>
 
-          <b-nav-item
-            v-if="checkPerm('content')"
-            to="/admin/content"
-            exact
-          >
-            Custom Pages
+          <b-nav-item v-if="checkPerm('content')">
+            <nuxt-link to="/admin/content">Custom Pages </nuxt-link>
           </b-nav-item>
 
-          <b-nav-item
-            v-if="checkPerm('archive')"
-            to="/admin/archive"
-            exact
-          >
-            Document Archive
+          <b-nav-item v-if="checkPerm('archive')">
+            <nuxt-link to="/admin/archive">Document Archive </nuxt-link>
           </b-nav-item>
 
-          <b-nav-item
-            v-if="checkPerm('accounts/men')"
-            to="/admin/accounts/men"
-            exact
-          >
-            Members
+          <b-nav-item v-if="checkPerm('accounts/men')">
+            <nuxt-link to="/admin/accounts/men">Members </nuxt-link>
           </b-nav-item>
 
           <!-- 					<b-nav-item
@@ -56,36 +40,20 @@
 					>
  -->
 
-          <b-nav-item
-            v-if="checkPerm('news')"
-            to="/admin/news"
-            exact
-          >
-            News
+          <b-nav-item v-if="checkPerm('news')">
+            <nuxt-link to="/admin/news">News </nuxt-link>
           </b-nav-item>
 
-          <b-nav-item
-            v-if="checkPerm('newsletters')"
-            to="/admin/newsletters"
-            exact
-          >
-            Newsletters
+          <b-nav-item v-if="checkPerm('newsletters')">
+            <nuxt-link to="/admin/newsletters">Newsletters </nuxt-link>
           </b-nav-item>
 
-          <b-nav-item
-            v-if="checkPerm('payments')"
-            to="/admin/payments"
-            exact
-          >
-            Payments
+          <b-nav-item v-if="checkPerm('payments')">
+            <nuxt-link to="/admin/payments">Payments </nuxt-link>
           </b-nav-item>
 
-          <b-nav-item
-            v-if="checkPerm('game_player_stats')"
-            to="/admin/game_player_stats"
-            exact
-          >
-            Stats
+          <b-nav-item v-if="checkPerm('game_player_stats')">
+            <nuxt-link to="/admin/game_player_stats">Stats </nuxt-link>
           </b-nav-item>
 
           <!-- 					<b-nav-item v-if="checkPerm('sponsors')" to="/admin/sponsors" exact
@@ -159,35 +127,28 @@
   </div>
 </template>
 
-<script>
-  export default {
-    data() {
-      return {}
-    },
-    middleware: 'auth',
-    methods: {
-      checkPerm(app) {
-        const user = JSON.parse(sessionStorage.getItem('auth'))
-        const temp = user.perms
-        // const perms = temp.find((u) => u.admin_app_name === app)
-        const perms = temp.find(function (u) {
-          // eslint-disable-next-line no-console
-          // console.log(u.admin_app_name, app, u.admin_app_name === app)
-          return u.admin_app_name === app
-        })
+<script setup>
+  // middleware: 'auth'
 
-        return perms.admin_perm
-      },
-    },
-    head() {
-      return {
-        title: 'Canisius College Rugby Club Admin',
-        bodyAttrs: {
-          class: 'admin-body',
-        },
-      }
-    },
+  const checkPerm = (app) => {
+    const user = JSON.parse(sessionStorage.getItem('auth'))
+    const temp = user.perms
+    // const perms = temp.find((u) => u.admin_app_name === app)
+    const perms = temp.find(function (u) {
+      // eslint-disable-next-line no-console
+      // console.log(u.admin_app_name, app, u.admin_app_name === app)
+      return u.admin_app_name === app
+    })
+
+    return perms.admin_perm
   }
+
+  useHead({
+    title: 'Canisius College Rugby Club Admin',
+    bodyAttrs: {
+      class: 'admin-body',
+    },
+  })
 </script>
 
 <style lang="scss" scoped>
