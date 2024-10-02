@@ -491,6 +491,7 @@ async function getAppPerms() {
 /*                                         */
 /***************************************** */
 async function resetRequest({ username }) {
+  console.log('in resetRequest username = ', username)
   // Find out if matching username exists
   const sql = `SELECT
 								COUNT(*) as cnt,
@@ -507,13 +508,13 @@ async function resetRequest({ username }) {
   // if username exists
   if (cnt) {
     const msg =
-      'To reset your user admin password <a href="https://buffalorugby.org/reset/' +
+      'To reset your user admin password <a href="https://canisiusrugby.org/reset/' +
       username +
       '" rel="noopener noreferrer" target="_blank" >Click here</a>'
 
     sendEmail(
       admin_user_email,
-      'BRC Admin User Password Reset',
+      'CRC Admin User Password Reset',
       '<h3>' + msg + '</h3>',
     )
   }

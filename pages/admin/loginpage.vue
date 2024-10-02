@@ -56,13 +56,7 @@
                 </button>
               </div>
             </form>
-            <nuxt-link
-              to="/admin/resetpassword"
-              tag="a"
-              active-class="active"
-              exact
-              >Forgot password?</nuxt-link
-            >
+            <nuxt-link to="/admin/resetpassword">Forgot password?</nuxt-link>
           </div>
         </div>
       </div>

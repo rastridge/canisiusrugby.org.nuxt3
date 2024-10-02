@@ -2,94 +2,74 @@
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
       <h3 class="sub-headline">Admin User Request Password Reset</h3>
-      <p
-        v-if="submitStatus === 'ERROR'"
-        :class="{ error: submitStatus === 'ERROR' }"
-      >
-        Please fill the form correctly.
-      </p>
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            v-model="username"
-            type="text"
-            name="username"
-            class="form-control"
-            @input="setUsername($event.target.value)"
-          />
-          <span
-            v-if="!$v.username.required"
-            class="error"
-            >Username is required</span
-          >
-        </div>
-        <h3 class="info-frame">
-          In a few moments instructions to reset your password will be sent to
-          you at the email address associated with this username
-        </h3>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-4">
-            <submit-cancel
-              :submitstatus="submitStatus"
-              @dispose="dispose"
-            />
-          </div>
-        </div>
+      <form @submit.prevent="handleSubmit">
+        <input
+          type="text"
+          v-model="formData.username"
+        />
+        <button type="submit">submit</button>
       </form>
+      <p>
+        <span
+          v-for="error in v$.$errors"
+          :key="error.$uid"
+        >
+          {{ error.$property }} - {{ error.$message }},
+        </span>
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
-    import { validationMixin } from 'vuelidate'
-    import { required } from 'vuelidate/lib/validators'
-    import { userService } from '@/services'
-  import { navigateTo } from 'nuxt/app'
+  import { required } from '@vuelidate/validators'
+  import { useVuelidate } from '@vuelidate/core'
+  import { useFetch } from 'nuxt/app'
 
-    	mixins: [validationMixin]
+  const formData = reactive({ username: '' })
 
-    			const username=ref( '')
-    			const submitStatus= ref('OK')
+  const rules = {
+    username: { required },
+  }
 
-    	validations: {
-    		username: {
-    			required
-    		}
-    	}
-    		const dispose = (e) => {
-    			if (e === 'submit') {
-    				handleSubmit()
-    			} else if (e === 'cancel') {
-    				returnToList()
-    			}
-    		}
+  const v$ = useVuelidate(rules, formData)
 
-    		const returnToList = () => {
-    			navigateTo('/admin/loginpage')
-    		}
+  const handleSubmit = async () => {
+    const result = await v$.value.$validate()
+    if (result) {
+      const username = formData.username
+      console.log(username)
+      const { data } = await useFetch(`/users/resetrequest`, {
+        method: 'POST',
+        body: { username },
+      })
+    } else {
+      alert('not validated')
+    }
+  }
 
-    		const setUsername = (value)=> {
-    			username.value = value
-    			$v.username.$touch()
-    		}
+  /*   const handleSubmit = async (e) => {
+    console.log('e = ', e)
+    submitStatus.value = ''
+    v$.value.$validate()
+    if (v$.value.$error) {
+      submitStatus.value = 'ERROR'
+    } else {
+      submitStatus.value = 'PENDING'
 
-    		const handleSubmit = (e) {
-    			submitStatus.vslue = ''
-    			$v.$touch()
-    			if ($v.$invalid) {
-    				submitStatus.vslue = 'ERROR'
-    			} else {
-    				submitStatus.vslue = 'PENDING'
-    				const { username } = this
-    				userService.resetRequest(username).then((username) => {
-    					if (!username.error) {
-    						returnToList()
-    					} else {
-    						submitStatus.vslue = 'ERROR'
-    						error = username.error
-    					}
-    				})
-    			}
-    		}
+      const { data } = await useFetch(
+        `/user/resetRequest/${formData.username}`,
+        {
+          method: 'get',
+        },
+      )
+      console.log(data)
+      if (!username.error) {
+        navigateTo('/admin/loginpage')
+      } else {
+        submitStatus.value = 'ERROR'
+        error = username.error
+      }
+    }
+  } */
 </script>
