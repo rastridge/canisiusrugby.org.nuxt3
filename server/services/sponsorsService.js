@@ -138,7 +138,7 @@ async function addOne({
 			from: FROM,
 			fromName: FROM_NAME,
 			to: 'ron.astridge@me.com',
-			subject: 'BRC Member Account Modification',
+			subject: 'CRC Member Account Modification',
 			body_text: '',
 			body_html: `<h3>An Canisius University Rugby Club  sponsorship for ${ad_client_name} has been created. Email ${ad_client_email}</h3>`,
 		}
@@ -193,7 +193,7 @@ async function editOne({
 			from: FROM,
 			fromName: FROM_NAME,
 			to: 'ron.astridge@me.com',
-			subject: 'BRC Member Account Modification',
+			subject: 'CRC Member Account Modification',
 			body_text: '',
 			body_html: `<h3>An Canisius University Rugby Club  sponsorship for ${ad_client_name} has been modified. Email ${ad_client_email}</h3>`,
 		}

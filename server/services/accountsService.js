@@ -684,7 +684,7 @@ async function addOneFlag({
 			from: FROM,
 			fromName: FROM_NAME,
 			to: TO_FLAG,
-			subject: 'BRC Flag Member Account Modification',
+			subject: 'CRC Flag Member Account Modification',
 			body_text: '',
 			body_html:
 				'<h3>An Canisius University Rugby Club  youth flag rugby account for ' +
@@ -809,7 +809,7 @@ async function addFlagByRegister({
 			from: FROM,
 			fromName: FROM_NAME,
 			to: TO_FLAG,
-			subject: 'BRC Flag Member Account Creation',
+			subject: 'CRC Flag Member Account Creation',
 			body_text: '',
 			body_html:
 				'<h3>An Canisius University Rugby Club  youth flag rugby account for ' +
@@ -945,7 +945,7 @@ async function editOneFlag({
 			from: FROM,
 			fromName: FROM_NAME,
 			to: TO_FLAG,
-			subject: 'BRC Member Account Modification',
+			subject: 'CRC Member Account Modification',
 			body_text: '',
 			body_html:
 				'The flag youth account for ' +

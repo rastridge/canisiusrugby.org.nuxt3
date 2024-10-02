@@ -2,29 +2,29 @@ import querystring from 'querystring'
 import https from 'https'
 
 export default function useEmail() {
-	const CONFIG = useRuntimeConfig()
-	const HOSTING = 'https://buffalorugby.org'
-	const dt = new Date()
-	async function sendNewsletters(
-		recipientss,
-		newsletter_subject,
-		newsletter_body_html,
-		newsletter_id
-	) {
-		// local function
-		function composeEmailHelper(
-			recipient,
-			newsletter_body_html,
-			newsletter_subject
-		) {
+  const CONFIG = useRuntimeConfig()
+  const HOSTING = 'https://buffalorugby.org'
+  const dt = new Date()
+  async function sendNewsletters(
+    recipientss,
+    newsletter_subject,
+    newsletter_body_html,
+    newsletter_id,
+  ) {
+    // local function
+    function composeEmailHelper(
+      recipient,
+      newsletter_body_html,
+      newsletter_subject,
+    ) {
       // console.log('recipient = ', recipient)
-			// this should work if and when email works
-			const TRACKING = `${HOSTING}/newsletters/track?account_id=${recipient.account_id}&newsletter_id=${newsletter_id}`
-			const TRACKINGPIXEL = `<img src="${TRACKING}" height="1" width="1"  />`
+      // this should work if and when email works
+      const TRACKING = `${HOSTING}/newsletters/track?account_id=${recipient.account_id}&newsletter_id=${newsletter_id}`
+      const TRACKINGPIXEL = `<img src="${TRACKING}" height="1" width="1"  />`
 
-			///////// Template from https://dashboard.unlayer.com/create/blank?ref=templates ////////////////////////////////
+      ///////// Template from https://dashboard.unlayer.com/create/blank?ref=templates ////////////////////////////////
 
-			const BEGIN_HTML = `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      const BEGIN_HTML = `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <!--[if gte mso 9]>
@@ -218,7 +218,7 @@ table, td { color: #000000; } </style>
   <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
     <p style="line-height: 140%;">`
 
-			const NEWSLETTER_END_STYLES = `</p>
+      const NEWSLETTER_END_STYLES = `</p>
   </div>
 
       </td>
@@ -262,7 +262,7 @@ table, td { color: #000000; } </style>
                      <tr><td>${recipient.account_addr_city}, ${recipient.account_addr_state} ${recipient.account_addr_postal}</td></tr>
                      <tr><td>${recipient.account_addr_country}</td></tr>
                      <tr><td>${recipient.account_addr_phone}</td></tr>
-                     <tr><td>Year Joined the BRC ${recipient.member_year}</td></tr>
+                     <tr><td>Year Joined the CRC ${recipient.member_year}</td></tr>
                      <tr><td>Previous teams ${recipient.member_prev_club}</td></tr>
                     </tbody>
                    </table> </p>
@@ -295,78 +295,77 @@ table, td { color: #000000; } </style>
 
 </html>`
 
-			const email = {
-				to: recipient.account_email,
-				subject: newsletter_subject,
-				message: BEGIN_HTML + newsletter_body_html + NEWSLETTER_END_STYLES,
-			}
-			// return email
-			return email
-		}
+      const email = {
+        to: recipient.account_email,
+        subject: newsletter_subject,
+        message: BEGIN_HTML + newsletter_body_html + NEWSLETTER_END_STYLES,
+      }
+      // return email
+      return email
+    }
 
-		let sentlist = []
-		let email = ''
+    let sentlist = []
+    let email = ''
 
-		let i = 0
-		do {
-			email = await composeEmailHelper(
-				recipientss[i],
-				newsletter_body_html,
-				newsletter_subject
-			)
-			await sendEmail(email.to, email.subject, email.message)
-			sentlist.push(email.to)
-			i++
-		} while (i < recipientss.length)
+    let i = 0
+    do {
+      email = await composeEmailHelper(
+        recipientss[i],
+        newsletter_body_html,
+        newsletter_subject,
+      )
+      await sendEmail(email.to, email.subject, email.message)
+      sentlist.push(email.to)
+      i++
+    } while (i < recipientss.length)
 
-		return sentlist
-	}
+    return sentlist
+  }
 
-	function sendEmail(to, subject, message) {
-		const post_data = querystring.stringify({
-			api_key: CONFIG.EE_API_KEY,
-			subject: subject,
-			from: CONFIG.FROM,
-			fromName: CONFIG.FROM_NAME,
-			to: to,
-			body_html: message,
-			body_text: '',
-			isTransactional: true,
-		})
+  function sendEmail(to, subject, message) {
+    const post_data = querystring.stringify({
+      api_key: CONFIG.EE_API_KEY,
+      subject: subject,
+      from: CONFIG.FROM,
+      fromName: CONFIG.FROM_NAME,
+      to: to,
+      body_html: message,
+      body_text: '',
+      isTransactional: true,
+    })
 
-		const post_options = {
-			hostname: 'api.elasticemail.com',
-			path: '/v2/email/send',
-			port: '443',
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length': post_data.length,
-			},
-		}
+    const post_options = {
+      hostname: 'api.elasticemail.com',
+      path: '/v2/email/send',
+      port: '443',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': post_data.length,
+      },
+    }
 
-		let result = ''
-		const post_req = https.request(post_options, function (res) {
-			res.setEncoding('utf8')
-			res.on('data', function () {
-				// result = chunk
-				const { statusMessage } = res
-				// console.log('statusCode, statusMessage ', statusCode, statusMessage)
-				result = statusMessage
-			})
-			res.on('error', function (e) {
-				result = 'Error: ' + e.message
-			})
-		})
+    let result = ''
+    const post_req = https.request(post_options, function (res) {
+      res.setEncoding('utf8')
+      res.on('data', function () {
+        // result = chunk
+        const { statusMessage } = res
+        result = statusMessage
+      })
+      res.on('error', function (e) {
+        result = 'Error: ' + e.message
+      })
+    })
 
-		post_req.write(post_data)
-		post_req.end()
+    post_req.write(post_data)
+    post_req.end()
 
-		return result
-	}
+    return result
+  }
 
-	return {
-		sendEmail,
-		sendNewsletters,
-	}
+  return {
+    sendEmail,
+    sendNewsletters,
+  }
 }

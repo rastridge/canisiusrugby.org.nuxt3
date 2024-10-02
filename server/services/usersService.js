@@ -392,7 +392,7 @@ async function editOne(info) {
 
       sendEmail(
         'ron.astridge@me.com',
-        'BRC Admin Account Modification',
+        'CRC Admin Account Modification',
         'The account for admin user ' +
           lc_admin_username +
           '  has been modified',
@@ -537,7 +537,7 @@ async function resetPassword({ username, password }) {
   console.log('sendMail ', username)
   sendEmail(
     'ron.astridge@me.com',
-    'BRC Member Account Modification',
+    'CRC Member Account Modification',
     `<h3>The password has been changed for ${username}. The new password is "${password}"</h3>`,
   )
 
