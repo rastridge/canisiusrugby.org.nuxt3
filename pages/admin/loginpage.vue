@@ -14,7 +14,7 @@
 
       <div class="row">
         <div class="col-12 offset-sm-3 col-sm-6 offset-md-4 col-md-4">
-          <div v-if="!isLoggedIn">
+          <div v-if="!auth.isLoggedIn">
             <h3 class="headline">Login Admin User</h3>
             <form @submit.prevent="handleSubmit">
               <div class="form-group">
@@ -50,7 +50,7 @@
               <div class="form-group">
                 <button
                   class="btn btn-primary"
-                  :disabled="loggingIn"
+                  :disabled="auth.loggingIn"
                 >
                   Login
                 </button>
@@ -71,34 +71,24 @@
 </template>
 
 <script setup>
+  import { useAuthStore } from '~/stores/authStore'
+  import { useAlertStore } from '~/stores/alertStore'
+  const auth = useAuthStore()
+  const alert = useAlertStore()
 
-     		const username = ref('')
-     		const password = ref('')
-     		const submitted = ref(false)
+  const username = ref('')
+  const password = ref('')
+  const submitted = ref(false)
 
-    		const loggingIn = computed(() =>
-     		 this.$store.state.authentication.status.loggingIn
-  )
-     	const alert = computed(() =>
-     		this.$store.state.alert
-    )
-  	const isLoggedIn = computed (() =>
-     		 !!this.$store.state.authentication.user
-  )
+  /*     watch(
+       	$route(to, from) {
+       		// clear alert on location change
+       		this.$store.dispatch('alert/clear')
+    	) */
 
-     watch(
-     	$route(to, from) {
-     		// clear alert on location change
-     		this.$store.dispatch('alert/clear')
-  	)
-
-
-     	const handleSubmit = (e) =>{
-     		submitted.value = true
-     		const { username, password } = this
-     		const { dispatch } = this.$store
-     		if (username && password) {
-     			dispatch('authentication/login', { username, password })
-     		}
-     	}
+  const handleSubmit = async (state) => {
+    if (username.value && password.value) {
+      auth.login(username.value, password.value) // pinia auth store
+    }
+  }
 </script>

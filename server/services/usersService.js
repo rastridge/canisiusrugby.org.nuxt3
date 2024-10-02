@@ -100,6 +100,8 @@ async function authenticate({ username, password }) {
     } else {
       match = false
     }
+    console.log(u.admin_user_name === lc_admin_user_name)
+    console.log(bcrypt.compareSync(password, u.admin_user_pass))
     return match
   })
 

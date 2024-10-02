@@ -190,7 +190,7 @@ export function useNavigationMenu() {
       {
         label: 'Login',
         icon: 'pi pi-fw pi-sign-in',
-        route: '/loginpage',
+        route: '/admin/loginpage',
         visible: () => !auth.isLoggedIn,
       },
       {
